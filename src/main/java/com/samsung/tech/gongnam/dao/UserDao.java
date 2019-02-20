@@ -1,21 +1,22 @@
 package com.samsung.tech.gongnam.dao;
 
-import com.samsung.tech.gongnam.config.DBConfig;
+import com.samsung.tech.gongnam.dao.connection.ConnectionMaker;
+import com.samsung.tech.gongnam.dao.connection.impl.DConnectionMaker;
 import com.samsung.tech.gongnam.domain.User;
 
 import java.sql.*;
 
 public abstract class UserDao {
 
-    private SimpleConnectionMaker simpleConnectionMaker;
+    private ConnectionMaker connectionMaker;
 
     public UserDao() {
-        simpleConnectionMaker = new SimpleConnectionMaker();
+        connectionMaker = new DConnectionMaker();
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
 
-        Connection conn = simpleConnectionMaker.makeNewConnection();
+        Connection conn = connectionMaker.makeConnection();
 
         PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO users(`id`, `name`, `password`) VALUES(?, ?, ?)");
@@ -31,7 +32,7 @@ public abstract class UserDao {
 
     public User get(String id) throws ClassNotFoundException, SQLException {
 
-        Connection conn = simpleConnectionMaker.makeNewConnection();
+        Connection conn = connectionMaker.makeConnection();
 
         PreparedStatement ps = conn.prepareStatement(
                 "SELECT * FROM users WHERE id = ?");

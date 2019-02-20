@@ -15,7 +15,7 @@ public class GongnamApplication {
 
         UserDao userDao = new UserDao();
 
-        int id = 2;
+        int id = 3;
 
         User user = new User();
         user.setId("id_" + id);
