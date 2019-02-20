@@ -1,6 +1,7 @@
 package com.samsung.tech.gongnam.dao;
 
 import com.samsung.tech.gongnam.dao.connection.ConnectionMaker;
+import com.samsung.tech.gongnam.dao.factory.DaoFactory;
 import com.samsung.tech.gongnam.domain.User;
 
 import java.sql.*;
@@ -9,8 +10,8 @@ public class UserDao {
 
     private ConnectionMaker connectionMaker;
 
-    public UserDao(ConnectionMaker connectionMaker) {
-        this.connectionMaker = connectionMaker;
+    public UserDao() {
+        this.connectionMaker = new DaoFactory().connectionMaker();
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {

@@ -17,11 +17,9 @@ public class GongnamApplication {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //        SpringApplication.run(GongnamApplication.class, args);
 
-        ApplicationContext context
-                = new AnnotationConfigApplicationContext(DaoFactory.class);
-        UserDao userDao = context.getBean("userDao", UserDao.class);
+        UserDao userDao = new UserDao();
 
-        int id = 6;
+        int id = 7;
 
         User user = new User();
         user.setId("id_" + id);

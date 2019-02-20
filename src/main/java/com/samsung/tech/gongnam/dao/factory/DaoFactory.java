@@ -13,7 +13,7 @@ public class DaoFactory {
 
     @Bean
     public UserDao userDao() {
-        return new UserDao(connectionMaker());
+        return new UserDao();
     }
 
     public NUserDao nUserDao() {
@@ -24,6 +24,7 @@ public class DaoFactory {
         return new DUserDao(connectionMaker());
     }
 
+    @Bean
     public ConnectionMaker connectionMaker() {
         return new DConnectionMaker();
     }
