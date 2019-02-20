@@ -1,4 +1,4 @@
-package com.samsung.tech.gongnam.dao.partner;
+package com.samsung.tech.gongnam.dao.connection.impl;
 
 import com.samsung.tech.gongnam.config.DBConfig;
 import com.samsung.tech.gongnam.dao.connection.ConnectionMaker;
@@ -7,15 +7,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class NUserDao  {
+public class NConnectionMaker implements ConnectionMaker {
 
-    private ConnectionMaker connectionMaker;
-
-    public NUserDao(ConnectionMaker connectionMaker) {
-        this.connectionMaker = connectionMaker;
-    }
-
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
+    @Override
+    public Connection makeConnection() throws ClassNotFoundException, SQLException {
         Class.forName(DBConfig.CLASS_NAME);
         Connection conn = DriverManager.getConnection(
                 DBConfig.URL,
