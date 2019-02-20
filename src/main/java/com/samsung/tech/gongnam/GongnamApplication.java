@@ -6,6 +6,8 @@ import com.samsung.tech.gongnam.dao.factory.DaoFactory;
 import com.samsung.tech.gongnam.domain.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
 
@@ -15,9 +17,11 @@ public class GongnamApplication {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //        SpringApplication.run(GongnamApplication.class, args);
 
-        UserDao userDao = new DaoFactory().userDao();
+        ApplicationContext context
+                = new AnnotationConfigApplicationContext(DaoFactory.class);
+        UserDao userDao = context.getBean("userDao", UserDao.class);
 
-        int id = 5;
+        int id = 6;
 
         User user = new User();
         user.setId("id_" + id);

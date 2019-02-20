@@ -5,9 +5,13 @@ import com.samsung.tech.gongnam.dao.connection.ConnectionMaker;
 import com.samsung.tech.gongnam.dao.connection.impl.DConnectionMaker;
 import com.samsung.tech.gongnam.dao.partner.DUserDao;
 import com.samsung.tech.gongnam.dao.partner.NUserDao;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class DaoFactory {
 
+    @Bean
     public UserDao userDao() {
         return new UserDao(connectionMaker());
     }
