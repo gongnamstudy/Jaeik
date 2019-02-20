@@ -18,8 +18,9 @@ public class UserDaoConnectionCountingTest {
 
         UserDao userDao = context.getBean("userDao", UserDao.class);
 
-        int id = 8;
+        userDao.deleteAll();
 
+        int id = 100;
         User user = new User();
         user.setId("id_" + id);
         user.setName("name_" + id);

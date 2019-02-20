@@ -19,8 +19,9 @@ public class GongnamApplication {
 
         UserDao userDao = new UserDao(new DaoFactory().connectionMaker());
 
-        int id = 7;
+        userDao.deleteAll();
 
+        int id = 100;
         User user = new User();
         user.setId("id_" + id);
         user.setName("name_" + id);
