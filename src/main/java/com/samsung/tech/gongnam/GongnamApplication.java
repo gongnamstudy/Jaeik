@@ -11,11 +11,11 @@ import java.sql.SQLException;
 public class GongnamApplication {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        SpringApplication.run(GongnamApplication.class, args);
+//        SpringApplication.run(GongnamApplication.class, args);
 
         UserDao userDao = new UserDao();
 
-        int id = 1;
+        int id = 2;
 
         User user = new User();
         user.setId("id_" + id);

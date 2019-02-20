@@ -8,12 +8,7 @@ import java.sql.*;
 public class UserDao {
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Class.forName(DBConfig.CLASS_NAME);
-        Connection conn = DriverManager.getConnection(
-                DBConfig.URL,
-                DBConfig.USER_NAME,
-                DBConfig.PASSWORD);
-
+        Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO users(`id`, `name`, `password`) VALUES(?, ?, ?)");
         ps.setString(1, user.getId());
@@ -27,12 +22,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Class.forName(DBConfig.CLASS_NAME);
-        Connection conn = DriverManager.getConnection(
-                DBConfig.URL,
-                DBConfig.USER_NAME,
-                DBConfig.PASSWORD);
-
+        Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement(
                 "SELECT * FROM users WHERE id = ?");
         ps.setString(1, id);
@@ -50,5 +40,15 @@ public class UserDao {
         conn.close();
 
         return user;
+    }
+
+    private Connection getConnection() throws ClassNotFoundException, SQLException {
+        Class.forName(DBConfig.CLASS_NAME);
+        Connection conn = DriverManager.getConnection(
+                DBConfig.URL,
+                DBConfig.USER_NAME,
+                DBConfig.PASSWORD);
+
+        return conn;
     }
 }
