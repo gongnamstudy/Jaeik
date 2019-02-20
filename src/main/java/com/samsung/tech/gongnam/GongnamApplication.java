@@ -17,7 +17,7 @@ public class GongnamApplication {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //        SpringApplication.run(GongnamApplication.class, args);
 
-        UserDao userDao = new UserDao();
+        UserDao userDao = new UserDao(new DaoFactory().connectionMaker());
 
         int id = 7;
 
