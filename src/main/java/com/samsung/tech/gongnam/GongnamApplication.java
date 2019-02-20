@@ -2,6 +2,7 @@ package com.samsung.tech.gongnam;
 
 import com.samsung.tech.gongnam.dao.UserDao;
 import com.samsung.tech.gongnam.dao.connection.impl.DConnectionMaker;
+import com.samsung.tech.gongnam.dao.factory.DaoFactory;
 import com.samsung.tech.gongnam.domain.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,9 +15,9 @@ public class GongnamApplication {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //        SpringApplication.run(GongnamApplication.class, args);
 
-        UserDao userDao = new UserDao(new DConnectionMaker());
+        UserDao userDao = new DaoFactory().userDao();
 
-        int id = 4;
+        int id = 5;
 
         User user = new User();
         user.setId("id_" + id);
