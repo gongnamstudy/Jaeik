@@ -5,7 +5,7 @@ import com.samsung.tech.gongnam.domain.User;
 
 import java.sql.*;
 
-public class UserDao {
+public abstract class UserDao {
 
     public void add(User user) throws ClassNotFoundException, SQLException {
         Connection conn = getConnection();
@@ -42,13 +42,5 @@ public class UserDao {
         return user;
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName(DBConfig.CLASS_NAME);
-        Connection conn = DriverManager.getConnection(
-                DBConfig.URL,
-                DBConfig.USER_NAME,
-                DBConfig.PASSWORD);
-
-        return conn;
-    }
+    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
 }
