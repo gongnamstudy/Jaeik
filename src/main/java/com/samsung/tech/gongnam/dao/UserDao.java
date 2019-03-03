@@ -2,6 +2,7 @@ package com.samsung.tech.gongnam.dao;
 
 import com.samsung.tech.gongnam.dao.connection.ConnectionMaker;
 import com.samsung.tech.gongnam.domain.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.*;
 
@@ -37,18 +38,20 @@ public class UserDao {
                 "SELECT * FROM users WHERE id = ?");
         ps.setString(1, id);
 
+        User user = null;
         ResultSet rs = ps.executeQuery();
-        rs.next();
-
-        User user = new User();
-        user.setId(rs.getString("id"));
-        user.setName(rs.getString("name"));
-        user.setPassword(rs.getString("password"));
+        if(rs.next()) {
+            user = new User();
+            user.setId(rs.getString("id"));
+            user.setName(rs.getString("name"));
+            user.setPassword(rs.getString("password"));
+        }
 
         rs.close();
         ps.close();
         conn.close();
 
+        if(user == null) throw new EmptyResultDataAccessException(1);
         return user;
     }
 

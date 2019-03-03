@@ -6,6 +6,7 @@ import com.samsung.tech.gongnam.domain.User;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.SQLException;
 
@@ -24,16 +25,40 @@ public class UserDaoTest {
         userDao.deleteAll();
         assertThat(userDao.getCount(), is(0));
 
-        User user = new User();
-        user.setId("jaeik92.lee");
-        user.setName("Jaeik Lee");
-        user.setPassword("password");
-        userDao.add(user);
-        assertThat(userDao.getCount(), is(1));
+        User user1 = new User();
+        user1.setId("jaeik92.lee");
+        user1.setName("Jaeik Lee");
+        user1.setPassword("password");
+        userDao.add(user1);
 
-        User user2 = userDao.get(user.getId());
-        assertThat(user2.getName(), is(user.getName()));
-        assertThat(user2.getPassword(), is(user.getPassword()));
+        User user2 = new User();
+        user2.setId("i2222");
+        user2.setName("n2222");
+        user2.setPassword("p2222");
+        userDao.add(user2);
+
+        assertThat(userDao.getCount(), is(2));
+
+        User getUser1 = userDao.get(user1.getId());
+        assertThat(getUser1.getName(), is(user1.getName()));
+        assertThat(getUser1.getPassword(), is(user1.getPassword()));
+
+        User getUser2 = userDao.get(user2.getId());
+        assertThat(getUser2.getName(), is(user2.getName()));
+        assertThat(getUser2.getPassword(), is(user2.getPassword()));
+    }
+
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void getUserFailure() throws SQLException, ClassNotFoundException {
+        AnnotationConfigApplicationContext context
+                = new AnnotationConfigApplicationContext(DaoFactory.class);
+
+        UserDao userDao = context.getBean("userDao", UserDao.class);
+        userDao.deleteAll();
+
+        assertThat(userDao.getCount(), is(0));
+
+        userDao.get("invalid_id");
     }
 
     @Test
