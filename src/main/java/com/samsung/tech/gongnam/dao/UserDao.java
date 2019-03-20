@@ -1,6 +1,9 @@
 package com.samsung.tech.gongnam.dao;
 
 import com.samsung.tech.gongnam.dao.connection.ConnectionMaker;
+import com.samsung.tech.gongnam.dao.template.AddStatement;
+import com.samsung.tech.gongnam.dao.template.DeleteAllStatement;
+import com.samsung.tech.gongnam.dao.template.StatementStrategy;
 import com.samsung.tech.gongnam.domain.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 
@@ -15,19 +18,8 @@ public class UserDao {
     }
 
     public void add(User user) throws ClassNotFoundException, SQLException {
-
-        Connection conn = connectionMaker.makeConnection();
-
-        PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO users(`id`, `name`, `password`) VALUES(?, ?, ?)");
-        ps.setString(1, user.getId());
-        ps.setString(2, user.getName());
-        ps.setString(3, user.getPassword());
-
-        ps.executeUpdate();
-
-        ps.close();
-        conn.close();
+        StatementStrategy strategy = new AddStatement(user);
+        jdbcContextWithStatementStrategy(strategy);
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
@@ -40,7 +32,7 @@ public class UserDao {
 
         User user = null;
         ResultSet rs = ps.executeQuery();
-        if(rs.next()) {
+        if (rs.next()) {
             user = new User();
             user.setId(rs.getString("id"));
             user.setName(rs.getString("name"));
@@ -51,21 +43,13 @@ public class UserDao {
         ps.close();
         conn.close();
 
-        if(user == null) throw new EmptyResultDataAccessException(1);
+        if (user == null) throw new EmptyResultDataAccessException(1);
         return user;
     }
 
     public void deleteAll() throws SQLException, ClassNotFoundException {
-
-        Connection conn = connectionMaker.makeConnection();
-
-        PreparedStatement ps = conn.prepareStatement(
-                "DELETE FROM users");
-
-        ps.executeUpdate();
-
-        ps.close();
-        conn.close();
+        StatementStrategy strategy = new DeleteAllStatement();
+        jdbcContextWithStatementStrategy(strategy);
     }
 
     public int getCount() throws SQLException, ClassNotFoundException {
@@ -84,6 +68,34 @@ public class UserDao {
         conn.close();
 
         return count;
+    }
+
+    public void jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException, ClassNotFoundException {
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = connectionMaker.makeConnection();
+
+            ps = stmt.makePreparedStatement(conn);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                }
+            }
+
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
     }
 }
 
